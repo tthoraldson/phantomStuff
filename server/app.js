@@ -50,29 +50,45 @@ function getDate(){
 var swagArray = [];
 var sitepage = null;
 var phInstance = null;
-phantom.create()
-    .then(instance => {
-        phInstance = instance;
-        return instance.createPage();
-    })
-    .then(page => {
-        sitepage = page;
-        return page.open('https://github.com/users/tthoraldson/contributions');
-    })
-    .then(status => {
-        console.log(status);
-        return sitepage.property('content');
-    })
-    .then(content => {
-        swagArray = content.split('\n');
-        swagArray.forEach(function(line){
-          line.
-    });
-        console.log(swagArray[1]);
-        sitepage.close();
-        phInstance.exit();
-    })
-    .catch(error => {
-        console.log(error);
-        phInstance.exit();
-    });
+// phantom.create()
+//     .then(instance => {
+//         phInstance = instance;
+//         return instance.createPage();
+//     })
+//     .then(page => {
+//         sitepage = page;
+//         return page.open('https://github.com/users/tthoraldson/contributions');
+//     })
+//     .then(status => {
+//         console.log(status);
+//         // sitepage.evaluate(function(){
+//         //   console.log('page eval started');
+//         //   var x = document.getElementsByClassName("example");
+//         //   console.log(x);
+//         // });
+//         return sitepage.property('content');
+//     })
+//     .then(content => {
+//         swagArray = content.split('\n');
+//         swagArray.forEach(function(line){
+//
+//         });
+//         console.log(swagArray[1]);
+//         sitepage.close();
+//         phInstance.exit();
+//     })
+//     .catch(error => {
+//         console.log(error);
+//         phInstance.exit();
+//     });
+
+
+page.onConsoleMessage = function(msg) {
+  console.log('Page title is ' + msg);
+};
+page.open('https://github.com/users/tthoraldson/contributions', function(status) {
+  page.evaluate(function() {
+    console.log(document.title);
+  });
+  phantom.exit();
+});
